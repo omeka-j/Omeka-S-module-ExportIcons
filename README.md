@@ -28,7 +28,7 @@ the module to `ExportIcons`.
 TODO / Bugs
 -----------
 
-- [ ] Add a site name to a citation text.
+- [x] Add a site name to a citation text.
 
 Warning
 -------

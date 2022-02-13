@@ -1,6 +1,16 @@
 <?php
-$translate = $this->plugin('translate');
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$escape = $plugins->get('escapeHtml');
+
+$site = "";
+if ($site = $this->viewModel()->getRoot()->getVariable('site')):
+    $site = $site->title();
+endif;
+
+$accessed = $escape($this->i18n()->dateFormat(new \DateTime(), \Omeka\View\Helper\I18n::DATE_FORMAT_LONG));
 ?>
+
 
 <table style="margin-bottom : 20px">
     <!-- JSON LD -->
@@ -73,9 +83,11 @@ $translate = $this->plugin('translate');
 <script>
     let title = "<?php echo $citation['title']; ?>";
     let url = "<?php echo $citation['url']; ?>";
+    let site = "<?php echo $site; ?>";
+    let accessed = "<?php echo $accessed; ?>";
 
     //記載例
-    let text = `${title}\n(${url})`
+    let text = `“${title}“, ${site}, accessed ${accessed}, ${url}`
     document.getElementById('citing').textContent = text;
 
     async function copy() {
