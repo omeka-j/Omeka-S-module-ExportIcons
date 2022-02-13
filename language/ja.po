@@ -1,0 +1,11 @@
+msgid "Copied"
+msgstr "コピーしました。"
+
+msgid "Citation"
+msgstr "引用"
+
+msgid "Copy"
+msgstr "記載例をコピー"
+
+msgid "Share"
+msgstr "SNSでシェア"

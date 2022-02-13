@@ -1,0 +1,98 @@
+<?php
+$translate = $this->plugin('translate');
+?>
+
+<table style="margin-bottom : 20px">
+    <!-- JSON LD -->
+    <?php if ($rdf["show"]): ?>
+    <tr>
+        <th><?php echo $translate('JSON-LD'); ?>
+        </th>
+        <td><a href="<?php echo $rdf['uri']; ?>"><img
+                    width="24px" title="RDF"
+                    src="<?= $rdf["icon"]; ?>" />&nbsp;&nbsp;<?php echo $rdf['uri']; ?></a></td>
+    </tr>
+    <?php endif; ?>
+
+    <!-- Text -->
+    <?php if ($text["show"] and count($text["values"]) > 0): ?>
+    <tr>
+        <th><?php echo $translate('Text'); ?>
+        </th>
+        <td>
+            <?php foreach ($text["values"] as $k => $v):?>
+            <a href="<?= $v["url"]; ?>"
+                title="<?= $v["label"]; ?>"
+                target="_blank"><img width="24px"
+                    title="<?= $v["label"]; ?>"
+                    src="<?= $v["icon"]; ?>" />&nbsp;&nbsp;<?= $v["label"]; ?></a>
+
+            <?php if ($k != array_key_last($text["values"])) {
+    // 最後(終端処理)
+    echo ' / ';
+} ?>
+            <?php endforeach; ?>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+    <!-- Citation -->
+    <?php if ($citation["show"]): ?>
+    <tr>
+        <th width="20%"><?php echo $translate('Citation'); ?>
+        </th>
+        <td><span id="citing"></span> <input style="margin-left : 10px;" type="button"
+                value="<?php echo $translate('Copy'); ?>"
+                onclick="copy()" /></td>
+    </tr>
+
+    <?php endif; ?>
+
+    <!-- Share -->
+    <?php if ($share["show"]): ?>
+    <tr>
+        <th><?php echo $translate('Share'); ?>
+        </th>
+        <td>
+            <?php foreach ($share["values"] as $k => $v):?>
+            <a href="<?= $v['url']; ?>"
+                target="_blank"><?= $v['label']; ?></a>
+
+            <?php if ($k != array_key_last($share["values"])) {
+    // 最後(終端処理)
+    echo ' / ';
+} ?>
+            <?php endforeach; ?>
+        </td>
+    </tr>
+    <?php endif; ?>
+
+
+</table>
+
+<script>
+    let title = "<?php echo $citation['title']; ?>";
+    let url = "<?php echo $citation['url']; ?>";
+
+    //記載例
+    let text = `${title}\n(${url})`
+    document.getElementById('citing').textContent = text;
+
+    async function copy() {
+        var listener = function(e) {
+
+            e.clipboardData.setData("text/plain", text);
+            // 本来のイベントをキャンセル
+            e.preventDefault();
+            // 終わったら一応削除
+            document.removeEventListener("copy", listener);
+        }
+
+        // コピーのイベントが発生したときに、クリップボードに書き込むようにしておく
+        document.addEventListener("copy", listener);
+
+        // コピー
+        document.execCommand("copy");
+        alert("<?php echo $translate('Copied'); ?>")
+    }
+</script>
